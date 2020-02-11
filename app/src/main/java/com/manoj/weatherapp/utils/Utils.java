@@ -1,4 +1,4 @@
-package com.manoj.weatherapp;
+package com.manoj.weatherapp.utils;
 
 public class Utils {
 

@@ -2,9 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
+        android:id="@+id/rl_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_gredient">
+        android:background="@drawable/bg_gredient"
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txt_city_name"
@@ -12,7 +13,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:padding="5dp"
-            android:text="City name"
             android:textColor="@android:color/white"
             android:textSize="25sp" />
 
@@ -23,7 +23,6 @@
             android:layout_below="@+id/txt_city_name"
             android:layout_centerHorizontal="true"
             android:padding="5dp"
-            android:text="Date and time"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
@@ -38,9 +37,8 @@
 
             <ImageView
                 android:id="@+id/img_weather_ic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/ic_launcher"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:padding="5dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -48,7 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="30"
                 android:textColor="@android:color/white"
                 android:textSize="100sp" />
 
@@ -65,6 +62,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="2dp"
                 android:text="@string/feel_like"
                 android:textColor="@android:color/white"
                 android:textSize="15sp" />
@@ -73,17 +71,12 @@
                 android:id="@+id/txt_feel_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="2dp"
                 android:textColor="@android:color/white"
                 android:textSize="15sp" />
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/ll_weather_desc"

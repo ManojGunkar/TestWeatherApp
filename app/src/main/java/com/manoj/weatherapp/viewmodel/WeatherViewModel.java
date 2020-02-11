@@ -10,7 +10,6 @@ import com.manoj.weatherapp.repository.WeatherRepository;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 
 public class WeatherViewModel extends ViewModel {
 
@@ -25,14 +24,13 @@ public class WeatherViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> mWeatherLiveData.setValue(result),
-                        throwable ->{
-                            mWeatherLiveData.setValue(null);
-                            HttpException httpException= (HttpException) throwable;
-                            if (httpException.code()==404){
-                                //todo: handle the error
-                            }
-                        }
+                        throwable -> mWeatherLiveData.setValue(null)
                 ));
         return mWeatherLiveData;
+    }
+
+    @Override
+    protected void onCleared() {
+        disposables.clear();
     }
 }

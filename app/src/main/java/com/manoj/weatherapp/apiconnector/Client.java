@@ -1,6 +1,6 @@
 package com.manoj.weatherapp.apiconnector;
 
-import com.manoj.weatherapp.Utils;
+import com.manoj.weatherapp.utils.Utils;
 import com.manoj.weatherapp.apiconnector.response.CurrentWeather;
 
 import java.util.concurrent.TimeUnit;

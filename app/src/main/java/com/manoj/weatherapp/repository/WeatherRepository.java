@@ -1,6 +1,6 @@
 package com.manoj.weatherapp.repository;
 
-import com.manoj.weatherapp.Utils;
+import com.manoj.weatherapp.utils.Utils;
 import com.manoj.weatherapp.apiconnector.Client;
 import com.manoj.weatherapp.apiconnector.response.CurrentWeather;
 
