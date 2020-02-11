@@ -4,8 +4,8 @@
     <RelativeLayout
         android:id="@+id/rl_root"
         android:layout_width="match_parent"
-        android:background="@drawable/bg_gredient"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gredient">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txt_city_name"
@@ -52,6 +52,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_feel_like"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_temperature"
@@ -65,7 +66,7 @@
                 android:padding="2dp"
                 android:text="@string/feel_like"
                 android:textColor="@android:color/white"
-                android:textSize="15sp" />
+                android:textSize="22sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_feel_like"
@@ -73,15 +74,38 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:textColor="@android:color/white"
-                android:textSize="15sp" />
+                android:textSize="22sp" />
 
         </LinearLayout>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_weather_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_feel_like"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_change_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@+id/txt_weather_desc"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:text="@string/change_city"
+            android:textColor="@android:color/holo_blue_bright"
+            android:textSize="15sp" />
 
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:id="@+id/ll_weather_desc"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_below="@+id/txt_change_city"
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
@@ -100,14 +124,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/precipitation"
                     android:textColor="@android:color/white"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt_precipitation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -130,14 +154,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/humidity"
                     android:textColor="@android:color/white"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt_humidity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
