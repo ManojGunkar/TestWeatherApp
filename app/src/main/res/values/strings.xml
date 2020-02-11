@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TestWeatherApp</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="humidity">Humidity</string>
+    <string name="feel_like">Feel Like</string>
+    <string name="weekly">7 Days</string>
 </resources>
