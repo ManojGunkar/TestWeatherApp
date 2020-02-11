@@ -1,7 +1,8 @@
 package com.manoj.weatherapp.apiconnector;
 
-import com.manoj.weatherapp.utils.Utils;
 import com.manoj.weatherapp.apiconnector.response.CurrentWeather;
+import com.manoj.weatherapp.apiconnector.response.ForcastWeather;
+import com.manoj.weatherapp.utils.Utils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -47,6 +48,12 @@ public class Client {
         Single<CurrentWeather> getCurrentWeather(
                 @Query("access_key") String apiKey,
                 @Query("query") String cityName);
+
+        @GET("forecast")
+        Single<ForcastWeather> getForecastWeather(
+                @Query("access_key") String apiKey,
+                @Query("query") String cityName,
+                @Query("forecast_days") String days);
 
     }
 }
