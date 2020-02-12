@@ -51,9 +51,8 @@ public class ForcastAdapter extends RecyclerView.Adapter<ForcastAdapter.ViewHold
 
         private void bindTo(CurrentWeather.Current current) {
             binding.txtDayWeekly.setText(current.getObservationTime());
-            binding.txtMaxTempWeekly.setText("Max - " + current.getTemperature() + "\u2103");
-            binding.txtMinTempWeekly.setText("Min - " + current.getTemperature() + "\u2103");
-            binding.txtPrecipitationWeekly.setText("Precip- " + current.getPrecip());
+            binding.txtTempForcast.setText(current.getTemperature() + "\u00B0" + " / " + current.getTemperature() + "\u00B0");
+            binding.txtWeatherForcast.setText(current.getWeatherDescriptions().get(0));
             Glide.with(binding.getRoot().getContext())
                     .load(current.getWeatherIcons().get(0))
                     .into(binding.imgWeekly);

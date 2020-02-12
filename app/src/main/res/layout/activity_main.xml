@@ -3,29 +3,19 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_gredient">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/layout"
             layout="@layout/content_main" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+        <include
+            android:id="@+id/loader_layout"
+            layout="@layout/loading_layout" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txt_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:padding="10dp"
-            android:text="@string/error"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="22sp" />
+        <include
+            android:id="@+id/error_layout"
+            layout="@layout/error_layout" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

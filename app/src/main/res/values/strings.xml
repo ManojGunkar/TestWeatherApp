@@ -12,4 +12,5 @@
     <string name="valid_city">Please enter valid city name</string>
     <string name="error">No City found</string>
     <string name="server_error">Network Error or Server Issue.\n Click here to Retry </string>
+    <string name="retry">Retry</string>
 </resources>

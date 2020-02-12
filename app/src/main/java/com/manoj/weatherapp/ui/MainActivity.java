@@ -1,6 +1,5 @@
 package com.manoj.weatherapp.ui;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,11 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +16,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bumptech.glide.Glide;
 import com.manoj.weatherapp.R;
 import com.manoj.weatherapp.apiconnector.response.CurrentWeather;
 import com.manoj.weatherapp.databinding.ActivityMainBinding;
@@ -57,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
         wait(true);
         fetchWeatherDetails("Bangalore", false);
 
-        mMainBinding.layout.txtChangeCity.setOnClickListener(v -> searchCity());
-        mMainBinding.txtError.setOnClickListener(v -> {
+        mMainBinding.errorLayout.btnRetry.setOnClickListener(v -> {
             wait(true);
             fetchWeatherDetails("Bangalore", false);
         });
@@ -83,13 +76,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void wait(boolean isloading) {
         if (isloading) {
-            mMainBinding.progressBar.setVisibility(View.VISIBLE);
+            mMainBinding.loaderLayout.llRoot.setVisibility(View.VISIBLE);
             mMainBinding.layout.rlRoot.setVisibility(View.GONE);
-            mMainBinding.txtError.setVisibility(View.GONE);
+            mMainBinding.errorLayout.llRoot.setVisibility(View.GONE);
         } else {
-            mMainBinding.progressBar.setVisibility(View.GONE);
+            mMainBinding.loaderLayout.llRoot.setVisibility(View.GONE);
             mMainBinding.layout.rlRoot.setVisibility(View.VISIBLE);
-            mMainBinding.txtError.setVisibility(View.GONE);
+            mMainBinding.errorLayout.llRoot.setVisibility(View.GONE);
         }
     }
 
@@ -98,15 +91,7 @@ public class MainActivity extends AppCompatActivity {
             if (result != null) {
                 wait(false);
                 mMainBinding.layout.txtCityName.setText(result.getLocation().getName());
-                mMainBinding.layout.txtTime.setText(result.getLocation().getLocaltime());
-                mMainBinding.layout.txtTemperature.setText(result.getCurrent().getTemperature() + "\u2103");
-                mMainBinding.layout.txtFeelLike.setText(result.getCurrent().getFeelslike() + "\u2103");
-                mMainBinding.layout.txtHumidity.setText(String.valueOf(result.getCurrent().getHumidity()));
-                mMainBinding.layout.txtPrecipitation.setText(result.getCurrent().getPrecip() + "%");
-                mMainBinding.layout.txtWeatherDesc.setText(result.getCurrent().getWeatherDescriptions().get(0));
-                Glide.with(this)
-                        .load(result.getCurrent().getWeatherIcons().get(0))
-                        .into(mMainBinding.layout.imgWeatherIc);
+                mMainBinding.layout.txtTemperature.setText(result.getCurrent().getTemperature() + "\u00B0");
 
                 List<CurrentWeather.Current> currents = new ArrayList<>();
                 for (int i = 1; i <= 7; i++) {
@@ -116,49 +101,20 @@ public class MainActivity extends AppCompatActivity {
                 }
                 setForcastData(currents);
             } else {
-                if (isSearching) {
-                    wait(false);
-                    errorOccur();
-                } else {
-                    wait(false);
-                    errorOccur();
-                    mMainBinding.txtError.setText(R.string.server_error);
-                }
+                wait(false);
+                errorOccur();
             }
         });
     }
 
     private void errorOccur() {
-        mMainBinding.txtError.setVisibility(View.VISIBLE);
-        mMainBinding.progressBar.setVisibility(View.GONE);
+        mMainBinding.errorLayout.llRoot.setVisibility(View.VISIBLE);
+        mMainBinding.loaderLayout.llRoot.setVisibility(View.GONE);
         mMainBinding.layout.rlRoot.setVisibility(View.GONE);
     }
 
     private void setForcastData(List<CurrentWeather.Current> list) {
-        mMainBinding.layout.recycleWeeklyWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+        mMainBinding.layout.recycleWeeklyWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         mMainBinding.layout.recycleWeeklyWeather.setAdapter(new ForcastAdapter(list));
-    }
-
-    private void searchCity() {
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View changeCityView = factory.inflate(R.layout.layout_dialog, null);
-        final AlertDialog changeCityDialog = new AlertDialog.Builder(this).create();
-        changeCityDialog.setView(changeCityView);
-
-        EditText editText = changeCityView.findViewById(R.id.et_city);
-
-        changeCityView.findViewById(R.id.txt_ok).setOnClickListener(v -> {
-            String cityName = editText.getText().toString();
-            if (TextUtils.isEmpty(cityName)) {
-                Toast.makeText(this, R.string.valid_city, Toast.LENGTH_SHORT).show();
-            } else {
-                wait(true);
-                fetchWeatherDetails(cityName, true);
-                changeCityDialog.dismiss();
-            }
-        });
-        changeCityView.findViewById(R.id.txt_cancel).setOnClickListener(v -> changeCityDialog.dismiss());
-        changeCityDialog.show();
-
     }
 }
