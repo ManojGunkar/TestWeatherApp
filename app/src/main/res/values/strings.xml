@@ -3,7 +3,7 @@
     <string name="precipitation">Precipitation</string>
     <string name="humidity">Humidity</string>
     <string name="feel_like">Feel Like</string>
-    <string name="weekly">7 Days</string>
+    <string name="weekly">Weekly forcast weather-</string>
     <string name="change_city"><u>Click here to change the city</u></string>
     <string name="enter_city_name">Enter city name</string>
     <string name="ok">Okay</string>

@@ -1,6 +1,12 @@
 package com.manoj.weatherapp.ui;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,17 +18,36 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.manoj.weatherapp.R;
+import com.manoj.weatherapp.apiconnector.response.CurrentWeather;
 import com.manoj.weatherapp.databinding.ActivityMainBinding;
+import com.manoj.weatherapp.ui.adapter.ForcastAdapter;
+import com.manoj.weatherapp.utils.Utils;
 import com.manoj.weatherapp.viewmodel.WeatherViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mMainBinding;
 
     private WeatherViewModel mWeatherViewModel;
+
+    private BroadcastReceiver mNetworkConnector = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Utils.isNetworkAvailable(MainActivity.this)) {
+                fetchWeatherDetails("Bangalore", false);
+            } else {
+                errorOccur();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +65,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mNetworkConnector, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mNetworkConnector);
+        super.onDestroy();
+    }
+
     private void wait(boolean isloading) {
         if (isloading) {
             mMainBinding.progressBar.setVisibility(View.VISIBLE);
@@ -53,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchWeatherDetails(String cityName, boolean isSearching) {
-        mWeatherViewModel.getCurrentWeatherLiveData(cityName).observeForever( result -> {
+        mWeatherViewModel.getCurrentWeatherLiveData(cityName).observeForever(result -> {
             if (result != null) {
                 wait(false);
                 mMainBinding.layout.txtCityName.setText(result.getLocation().getName());
@@ -66,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(this)
                         .load(result.getCurrent().getWeatherIcons().get(0))
                         .into(mMainBinding.layout.imgWeatherIc);
+
+                List<CurrentWeather.Current> currents = new ArrayList<>();
+                for (int i = 1; i <= 7; i++) {
+                    CurrentWeather.Current current = result.getCurrent();
+                    current.setObservationTime("Day");
+                    currents.add(current);
+                }
+                setForcastData(currents);
             } else {
                 if (isSearching) {
                     wait(false);
@@ -85,8 +134,12 @@ public class MainActivity extends AppCompatActivity {
         mMainBinding.layout.rlRoot.setVisibility(View.GONE);
     }
 
-    private void searchCity() {
+    private void setForcastData(List<CurrentWeather.Current> list) {
+        mMainBinding.layout.recycleWeeklyWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+        mMainBinding.layout.recycleWeeklyWeather.setAdapter(new ForcastAdapter(list));
+    }
 
+    private void searchCity() {
         LayoutInflater factory = LayoutInflater.from(this);
         final View changeCityView = factory.inflate(R.layout.layout_dialog, null);
         final AlertDialog changeCityDialog = new AlertDialog.Builder(this).create();
